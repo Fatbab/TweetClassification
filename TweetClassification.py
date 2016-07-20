@@ -1,120 +1,13 @@
 ## Text Classification - Supervised Learning
-## Will Get 100 tweets from Donal Trump, Bill Clinton and Adele's account as
-## training set (Trump YES/NO).
-## Analysis text and defines identifying attributes for each.
-## Test on a mix of 50 tweets randomly chosen from same accounts, but not been
-## trained upon.
-
-## Connect to Twitter API
-## Reference: http://adilmoujahid.com/posts/2014/07/twitter-analytics/
-#Import the necessary methods from tweepy library
+## Aim is to train the classifier to distinguish between Donald Trump and other tweets. 
+## Training set: 200 tweets from Donald Trump, 100 from Bill Clinton and 100 from Adele's account.
+## Test on a new collection of 100 tweets from Donald Trump, 50 from Bill Clinton and 50 from Adele's.
 
 import tweepy
-#from tweepy.streaming import StreamListener
-#from tweepy import OAuthHandler
-#from tweepy import Stream
-
-# Import libraries for text mining
-import csv
+import csv 
 import json
 import pandas as pd
 import matplotlib.pyplot as plt
-
-#Variables that contains user credentials to access Twitter API
-## Replace with valid credentials
-access_token = "1171035650-l3MAgBH6peyUQoePBgivrooZMvrVxv85D8RcI6R" # "ENTER YOUR ACCESS TOKEN"
-access_token_secret = "v5duEnw3kSN3B4goTXAF8byYTlB07uVBZ65uQEXyRNxbk" # "ENTER YOUR ACCESS TOKEN SECRET"
-consumer_key = "G7K5UhTvtqo5OrYMusNk5WPGM" # "ENTER YOUR API KEY"
-consumer_secret = "hlNoZOrDKCy1r40nHuqGK7HVa92qcGcPpVZZ2tsv8Qslneqzwn" # "ENTER YOUR API SECRET"
-
-## Script to get tweets for certain account
-## Reference: https://gist.github.com/yanofsky/5436496
-def get_all_tweets(screen_name):
-	#Twitter only allows access to a users most recent 3240 tweets with this method
-
-	#authorize twitter, initialize tweepy
-	auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
-	auth.set_access_token(access_token, access_token_secret)
-	api = tweepy.API(auth)
-
-	#initialize a list to hold all the tweepy Tweets
-	alltweets = []
-
-	#make initial request for most recent tweets (200 is the maximum allowed count)
-	new_tweets = api.user_timeline(screen_name = screen_name,count=200)
-
-	#save most recent tweets
-	alltweets.extend(new_tweets)
-
-	#save the id of the oldest tweet less one
-	oldest = alltweets[-1].id - 1
-
-	#keep grabbing tweets until there are no tweets left to grab
-	while len(new_tweets) > 0:
-		print "getting tweets before %s" % (oldest)
-
-		#all subsiquent requests use the max_id param to prevent duplicates
-		new_tweets = api.user_timeline(screen_name = screen_name,count=200,max_id=oldest)
-
-		#save most recent tweets
-		alltweets.extend(new_tweets)
-
-		#update the id of the oldest tweet less one
-		oldest = alltweets[-1].id - 1
-
-		print "...%s tweets downloaded so far" % (len(alltweets))
-
-	#transform the tweepy tweets into a 2D array that will populate the csv
-	outtweets = [[tweet.id_str, tweet.created_at, tweet.text.encode("utf-8")] for tweet in alltweets]
-
-	#write the csv
-	with open('/Users/fatemeh/Documents/Career/Concentra/TextAnalysis-SampleWork/%s_tweets.csv' % screen_name, 'wb') as f:
-		writer = csv.writer(f)
-		writer.writerow(["id","created_at","text"])
-		writer.writerows(outtweets)
-
-	pass
-
-
-#if __name__ == '__main__':
-	#pass in the username of the account you want to download
-get_all_tweets("realDonaldTrump")
-get_all_tweets("billclinton")
-get_all_tweets("Adele")
-
-## Training set: 200 tweets from Donald Trump, 100 from Bill Clinton and 100 from Adele
-Adele =[]
-with open('/Users/fatemeh/Documents/Career/Concentra/TextAnalysis-SampleWork/Adele_tweets.csv', 'rb') as f:
-    next(f) # skip header line
-    reader = csv.reader(f,delimiter=',')
-    for row in reader:
-        Adele.append(row[2])
-
-Clinton =[]
-with open('/Users/fatemeh/Documents/Career/Concentra/TextAnalysis-SampleWork/billclinton_tweets.csv', 'rb') as f:
-    next(f) # skip header line
-    reader = csv.reader(f,delimiter=',')
-    for row in reader:
-        Clinton.append(row[2])
-
-Trump =[]
-with open('/Users/fatemeh/Documents/Career/Concentra/TextAnalysis-SampleWork/realDonaldTrump_tweets.csv', 'rb') as f:
-    next(f) # skip header line
-    reader = csv.reader(f,delimiter=',')
-    for row in reader:
-        Trump.append(row[2])
-
-# Divide the set into training n test subsets
-Adele_train = Adele[0:100]
-Adele_test = Adele[101:151]
-
-Clinton_train = Clinton[0:100]
-Clinton_test = Clinton[101:151]
-
-Trump_train = Trump[0:200]
-Trump_test = Trump[201:301]
-
-## https://github.com/abromberg/sentiment_analysis_python/blob/master/sentiment_analysis.py
 import re, math, collections, itertools, os
 import nltk, nltk.classify.util, nltk.metrics
 from nltk.classify import NaiveBayesClassifier
@@ -124,7 +17,106 @@ from nltk.metrics.scores import precision
 from nltk.metrics.scores import recall
 from nltk.probability import FreqDist, ConditionalFreqDist
 
+## Connect to Twitter API
+## Reference: http://adilmoujahid.com/posts/2014/07/twitter-analytics/
+## Variables that contains user credentials to access Twitter API
+## Replace with valid credentials
+access_token = "" # "ENTER YOUR ACCESS TOKEN"
+access_token_secret = "" # "ENTER YOUR ACCESS TOKEN SECRET"
+consumer_key = "" # "ENTER YOUR API KEY"
+consumer_secret = "" # "ENTER YOUR API SECRET"
+
+## Script to get tweets for certain account
+## Reference: https://gist.github.com/yanofsky/5436496
+def get_all_tweets(screen_name):
+	# Twitter only allows access to a users most recent 3240 tweets with this method
+	# Authorize twitter, initialize tweepy
+	auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+	auth.set_access_token(access_token, access_token_secret)
+	api = tweepy.API(auth)
+
+	# Initialize a list to hold all the tweepy Tweets
+	alltweets = []
+
+	# Make initial request for most recent tweets (200 is the maximum allowed count)
+	new_tweets = api.user_timeline(screen_name = screen_name, count=200)
+
+	# Save most recent tweets
+	alltweets.extend(new_tweets)
+
+	# Save the id of the oldest tweet less one
+	oldest = alltweets[-1].id - 1
+
+	# Keep grabbing tweets until there are no tweets left to grab
+	while len(new_tweets) > 0:
+		print "getting tweets before %s" % (oldest)
+
+		# All subsiquent requests use the max_id param to prevent duplicates
+		new_tweets = api.user_timeline(screen_name = screen_name,count=200,max_id=oldest)
+
+		# Save most recent tweets
+		alltweets.extend(new_tweets)
+
+		# Update the id of the oldest tweet less one
+		oldest = alltweets[-1].id - 1
+
+		print "...%s tweets downloaded so far" % (len(alltweets))
+
+	# Transform the tweepy tweets into a 2D array that will populate the csv
+	outtweets = [[tweet.id_str, tweet.created_at, tweet.text.encode("utf-8")] for tweet in alltweets]
+
+	# Write to csv generically
+	with open('/PATH/TO/WRITE/%s_tweets.csv' % screen_name, 'wb') as f:
+		writer = csv.writer(f)
+		writer.writerow(["id","created_at","text"])
+		writer.writerows(outtweets)
+
+	pass
+
+
+get_all_tweets("realDonaldTrump")
+get_all_tweets("billclinton")
+get_all_tweets("Adele")
+
+## Read in the tweets
+Adele =[]
+with open('/PATH/TO/READ/Adele_tweets.csv', 'rb') as f:
+    next(f) # skip header line
+    reader = csv.reader(f,delimiter=',')
+    for row in reader:
+        Adele.append(row[2])
+
+Clinton =[]
+with open('/PATH/TO/READ/billclinton_tweets.csv', 'rb') as f:
+    next(f) # skip header line
+    reader = csv.reader(f,delimiter=',')
+    for row in reader:
+        Clinton.append(row[2])
+
+Trump =[]
+with open('/PATH/TO/READ/realDonaldTrump_tweets.csv', 'rb') as f:
+    next(f) # skip header line
+    reader = csv.reader(f,delimiter=',')
+    for row in reader:
+        Trump.append(row[2])
+
+## Training set: 200 tweets from Donald Trump, 100 from Bill Clinton and 100 from Adele
+## Divide the set into training n test subsets
+Adele_train = Adele[0:100]
+Adele_test = Adele[101:151]
+
+Clinton_train = Clinton[0:100]
+Clinton_test = Clinton[101:151]
+
+Trump_train = Trump[0:200]
+Trump_test = Trump[201:301]
+
+## TEXT ANALYSIS 
+## https://github.com/abromberg/sentiment_analysis_python/blob/master/sentiment_analysis.py
+
 def evaluate_features(feature_select):
+	## Label all Trump tweets with 'pos' and other tweets with 'neg'
+	## Divide them into Train and Test subset 
 	posFeatures_train =[]
 	negFeatures_train =[]
 
@@ -155,15 +147,17 @@ def evaluate_features(feature_select):
 	testFeatures = posFeatures_test + negFeatures_test
 
 	#print 'testFeatures: %s' %testFeatures
-	print 'enumerate(testFeatures): %s' %enumerate(testFeatures)
-	#trains a Naive Bayes Classifier
+	#print 'enumerate(testFeatures): %s' %enumerate(testFeatures)
+	
+	## Trains a Naive Bayes Classifier
+	## Read more here: https://en.wikipedia.org/wiki/Naive_Bayes_classifier
 	classifier = NaiveBayesClassifier.train(trainFeatures)
 
-	#initiates referenceSets and testSets
+	## Initiates referenceSets and testSets
 	referenceSets = collections.defaultdict(set)
 	testSets = collections.defaultdict(set)
 
-	#puts correctly labeled sentences in referenceSets and the predictively labeled version in testsets
+	## Puts correctly labeled sentences in referenceSets and the predictively labeled version in testsets
 	for i, (features, label) in enumerate(testFeatures):
 		referenceSets[label].add(i)
 		predicted = classifier.classify(features)
