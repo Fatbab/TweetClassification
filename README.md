@@ -25,13 +25,15 @@ TP: True Positive,   TN: True Negative,   FP: False Positive,   FN: False Negati
 2. To identify high information features, we've used [chi-squared](http://streamhacker.com/tag/chi-square/) as measure for information gain.      
   The idea is to identify words that appear primarily in one class and not so often in other classes. To use `BigramAssocMeasures.chi_sq` function, we need to calcualte overall and class-based word frequecy for every word and, the total number of words. 
 
-### New Coding Tips:   
+### Coding Remarks:   
 1. [Naive Bayes Classification] (https://en.wikipedia.org/wiki/Naive_Bayes_classifier "Wikipedia")
 1. Tweepy
-1. nltk.classify, nltk.metrics, nltk.probability
+1. nltk.classify, nltk.metrics, nltk.probability, BigramAssocMeasures.chi_sq
+1. (Nested Function Call)[http://stackoverflow.com/questions/38512596/nested-function-calls-and-missing-input-parameter-python]
 
 ### References:
 1. [Connceting to Twitter API](http://adilmoujahid.com/posts/2014/07/twitter-analytics/)
 1. [Twitter Text Mining](https://gist.github.com/yanofsky/5436496)
 1. [Text Classification](https://github.com/abromberg/sentiment_analysis_python/blob/master/sentiment_analysis.py)
 1. [Chi-Square for Eliminating Low Information Features](http://streamhacker.com/tag/chi-square/)
+1. [Stopwords and Collocations](http://streamhacker.com/2010/05/24/text-classification-sentiment-analysis-stopwords-collocations/)
