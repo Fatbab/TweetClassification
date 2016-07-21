@@ -1,5 +1,13 @@
 # TweetClassification
-A quick proof of concept to classify (Naïve Bayse) twitter texts, sample of supervised learning. 
+A quick python proof of concept to classify (Naïve Bayse) twitter texts (supervised learning). 
+
+### Steps:
+1. Get the tweets via API
+2. Extract words
+3. Compute frequency of each word
+5. Train and Test by Na¨ive Bayes classifier
+4. Identify significant words by computing chi-square
+
 
 ### New Coding Tips:   
 1. [Naive Bayes Classification] (https://en.wikipedia.org/wiki/Naive_Bayes_classifier "Wikipedia")
