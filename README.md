@@ -3,10 +3,11 @@ A quick python proof of concept to classify (Naïve Bayse) twitter texts (superv
 
 ### Steps:
 1. Get the tweets via API
-2. Extract words
-3. Compute frequency of each word
-5. Train and Test by Naïve Bayes classifier
+2. Extract all words
+3. Remove [Stop Words](http://streamhacker.com/2010/05/24/text-classification-sentiment-analysis-stopwords-collocations/)
 4. Identify significant words by computing chi-square
+5. Train and Test by Naïve Bayes classifier
+
 
 ### Little Theory Brush Up:
 1. To evaluate performace, we've got the following measures:    
@@ -22,7 +23,7 @@ A quick python proof of concept to classify (Naïve Bayse) twitter texts (superv
 TP: True Positive,   TN: True Negative,   FP: False Positive,   FN: False Negative   
 
 2. To identify high information features, we've used [chi-squared](http://streamhacker.com/tag/chi-square/) as measure for information gain.      
-  The idea is to identify words that appear primarily in one class and not so often in other classes. To use `BigramAssocMeasures.chi_sq` function, we need to calcualte overall and class-based word frequecy for every word. 
+  The idea is to identify words that appear primarily in one class and not so often in other classes. To use `BigramAssocMeasures.chi_sq` function, we need to calcualte overall and class-based word frequecy for every word and, the total number of words. 
 
 ### New Coding Tips:   
 1. [Naive Bayes Classification] (https://en.wikipedia.org/wiki/Naive_Bayes_classifier "Wikipedia")
