@@ -29,7 +29,7 @@ TP: True Positive,   TN: True Negative,   FP: False Positive,   FN: False Negati
 1. [Naive Bayes Classification] (https://en.wikipedia.org/wiki/Naive_Bayes_classifier "Wikipedia")
 1. Tweepy
 1. nltk.classify, nltk.metrics, nltk.probability, BigramAssocMeasures.chi_sq
-1. (Nested Function Call)[http://stackoverflow.com/questions/38512596/nested-function-calls-and-missing-input-parameter-python]
+1. [Nested Function Call](http://stackoverflow.com/questions/38512596/nested-function-calls-and-missing-input-parameter-python)
 
 ### References:
 1. [Connceting to Twitter API](http://adilmoujahid.com/posts/2014/07/twitter-analytics/)
