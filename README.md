@@ -11,17 +11,18 @@ A quick python proof of concept to classify (Naïve Bayse) twitter texts (superv
 ### Theoretical Concepts:
 1. To evaluate performace, we've got the following measures"    
   * Accuracy: percentage of items in test set that the classifier correctly labeled.    
-   (TP+TN)/(TP+TN+FP+FN)
+   (TP + TN)/(TP + TN + FP + FN)
   * Precision: how well classifier identifies the positive cases from amongs all cases it deemed positive.    
-   True_Positive / (True_Positive+False_Positive) 
+   TP / (TP + FP) 
   * Recall: how well classifier identifies positive cases from amongst cases all actually posivie cases.     
-   True_Positive / (True_Positive+False_Negative)    
+   TP / (TP + FN)    
 
 Accuracy alone is not a good indicator of performance, for example when searching amongst huge pile of documents for one with specific features, it is very unlikely to find the correct document. So a classifer that always returns FALSE will get a high "Accuracy" whereas in fact it is not a good classifier. For such classifier we have TP=FP=0, FN = small number and TN = dataset size - FN. So Accuracy is a number very close to 100%.  It is easy to see how Precision = Recall = 0 for this classifier.    
 
-Precision:   
-
-Recall: 
+TP: True Positive   
+TN: True Negative   
+FP: False Positive   
+FN: False Negative   
 
 ### New Coding Tips:   
 1. [Naive Bayes Classification] (https://en.wikipedia.org/wiki/Naive_Bayes_classifier "Wikipedia")
