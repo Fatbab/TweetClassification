@@ -163,9 +163,10 @@ def evaluate_features(feature_select):
 		predicted = classifier.classify(features)
 		testSets[predicted].add(i)
 
-	#prints metrics to show how well the feature selection did
-	## precision: fraction of test values that appear in the reference set
-	## recall: fraction of reference values that appear in the test set
+	## Prints metrics to show how well the feature selection did
+	## Accuracy: percentage of items in test set that the classifier correctly labeled.
+	## Precision: True_Positive / (True_Positive+False_Positive) 
+	## Recall: True_Positive / (True_Positive+False_Negative) 
 	print 'train on %d instances, test on %d instances' % (len(trainFeatures), len(testFeatures))
 	print 'accuracy:', nltk.classify.util.accuracy(classifier, testFeatures)
 	print 'pos precision:', precision(referenceSets['pos'], testSets['pos'])
@@ -199,7 +200,11 @@ def create_word_scores():
 	posWords = list(itertools.chain(*posWords))
 	negWords = list(itertools.chain(*negWords))
 
-	#build frequency distibution of all words and then frequency distributions of words within positive and negative labels
+	## Frequency Distibution: number of times each word has appeared in input list
+	## Conditional Frequency Distribution: counts word frequency by genre, (genre, word). In this case genre = pos, neg.
+	## Essentially counts the number of time a word has appeared with pos tag and neg tag, for every single word in list.
+	## http://www.nltk.org/book/ch02.html#sec-conditional-frequency-distributions
+	## Note that we cannot just borrow from pre-defined genres. We need to train based on our definition of "pos"/"neg"   
 	word_fd = FreqDist()
 	cond_word_fd = ConditionalFreqDist()
 	for word in posWords:
@@ -209,12 +214,13 @@ def create_word_scores():
 		word_fd[word.lower()] += 1
 		cond_word_fd['neg'][word.lower()] += 1
 
-	#finds the number of positive and negative words, as well as the total number of words
+	# Finds the number of positive and negative words, as well as the total number of words
 	pos_word_count = cond_word_fd['pos'].N()
 	neg_word_count = cond_word_fd['neg'].N()
 	total_word_count = pos_word_count + neg_word_count
 
-	#builds dictionary of word scores based on chi-squared test
+	# Builds dictionary of word scores based on chi-squared test
+	# http://streamhacker.com/tag/chi-square/
 	word_scores = {}
 	for word, freq in word_fd.iteritems():
 		pos_score = BigramAssocMeasures.chi_sq(cond_word_fd['pos'][word], (freq, pos_word_count), total_word_count)
@@ -225,7 +231,6 @@ def create_word_scores():
 
 #finds word scores
 word_scores = create_word_scores()
-print word_scores
 
 #finds the best 'number' words based on word scores
 def find_best_words(word_scores, number):
