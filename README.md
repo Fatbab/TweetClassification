@@ -31,6 +31,10 @@ A quick python proof of concept to classify (Naïve Bayse) twitter texts (superv
 1. nltk.classify, nltk.metrics, nltk.probability, BigramAssocMeasures.chi_sq
 1. [Nested Function Call](http://stackoverflow.com/questions/38512596/nested-function-calls-and-missing-input-parameter-python)
 
+### Future Work:
+1. Try other feature selection methods to replace make_full_dict. E.g. pair of words, x-many words before and after a keyword for a list of keywords, others(?).
+1. Get rid of stopwords before counting frequencies
+
 ### References:
 1. [Connceting to Twitter API](http://adilmoujahid.com/posts/2014/07/twitter-analytics/)
 1. [Twitter Text Mining](https://gist.github.com/yanofsky/5436496)
