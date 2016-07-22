@@ -33,7 +33,7 @@ A quick python proof of concept to classify (Naïve Bayse) twitter texts (superv
 
 ### Future Work:
 1. Try other feature selection methods to replace make_full_dict. E.g. pair of words, x-many words before and after a keyword for a list of keywords, others(?).
-1. Get rid of stopwords before counting frequencies
+1. Remove stopwords before counting frequencies.
 
 ### References:
 1. [Connceting to Twitter API](http://adilmoujahid.com/posts/2014/07/twitter-analytics/)
