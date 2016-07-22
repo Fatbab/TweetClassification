@@ -1,5 +1,5 @@
 ## Text Classification - Supervised Learning
-## Aim is to train the classifier to distinguish between Donald Trump and other tweets. 
+## Goal is to train the classifier to distinguish between Donald Trump and 'other' tweets. 
 ## Training set: 200 tweets from Donald Trump, 100 from Bill Clinton and 100 from Adele's account.
 ## Test on a new collection of 100 tweets from Donald Trump, 50 from Bill Clinton and 50 from Adele's.
 
@@ -146,9 +146,6 @@ def evaluate_features(feature_select):
 	trainFeatures = posFeatures_train + negFeatures_train
 	testFeatures = posFeatures_test + negFeatures_test
 
-	#print 'testFeatures: %s' %testFeatures
-	#print 'enumerate(testFeatures): %s' %enumerate(testFeatures)
-	
 	## Trains a Naive Bayes Classifier
 	## Read more here: https://en.wikipedia.org/wiki/Naive_Bayes_classifier
 	classifier = NaiveBayesClassifier.train(trainFeatures)
@@ -175,18 +172,19 @@ def evaluate_features(feature_select):
 	print 'neg recall:', recall(referenceSets['neg'], testSets['neg'])
 	classifier.show_most_informative_features(10)
 
-#creates a feature selection mechanism that uses all words
+## Creates a feature selection mechanism that uses all words
+## This function is passed on to evaluate_featues as input. One can change this to select every pair of words ot threesome, etc.
 def make_full_dict(words):
 	return dict([(word, True) for word in words])
 
-#tries using all words as the feature selection mechanism
+## Using all words as the feature selection mechanism
 print 'using all words as features'
 evaluate_features(make_full_dict)
 
-
-#scores words based on chi-squared test to show information gain (http://streamhacker.com/2010/06/16/text-classification-sentiment-analysis-eliminate-low-information-features/)
+## Once word selection is done, we move onto identifying most informative features
+## Scores words based on chi-squared test to show information gain 
+## (http://streamhacker.com/2010/06/16/text-classification-sentiment-analysis-eliminate-low-information-features/)
 def create_word_scores():
-	#creates lists of all positive and negative words
 	posWords = []
 	negWords = []
 
@@ -202,7 +200,7 @@ def create_word_scores():
 
 	## Frequency Distibution: number of times each word has appeared in input list
 	## Conditional Frequency Distribution: counts word frequency by genre, (genre, word). In this case genre = pos, neg.
-	## Essentially counts the number of time a word has appeared with pos tag and neg tag, for every single word in list.
+	## Essentially counts the number of time a word has appeared paired with pos or neg tag, for every single word in list.
 	## http://www.nltk.org/book/ch02.html#sec-conditional-frequency-distributions
 	## Note that we cannot just borrow from pre-defined genres. We need to train based on our definition of "pos"/"neg"   
 	word_fd = FreqDist()
@@ -214,13 +212,14 @@ def create_word_scores():
 		word_fd[word.lower()] += 1
 		cond_word_fd['neg'][word.lower()] += 1
 
-	# Finds the number of positive and negative words, as well as the total number of words
+	## Finds the number of positive and negative words, as well as the total number of words
+	## Wee need these elements for computing chi-sq 
 	pos_word_count = cond_word_fd['pos'].N()
 	neg_word_count = cond_word_fd['neg'].N()
 	total_word_count = pos_word_count + neg_word_count
 
-	# Builds dictionary of word scores based on chi-squared test
-	# http://streamhacker.com/tag/chi-square/
+	## Builds dictionary of word scores based on chi-squared test
+	## http://streamhacker.com/tag/chi-square/
 	word_scores = {}
 	for word, freq in word_fd.iteritems():
 		pos_score = BigramAssocMeasures.chi_sq(cond_word_fd['pos'][word], (freq, pos_word_count), total_word_count)
@@ -229,22 +228,22 @@ def create_word_scores():
 
 	return word_scores
 
-#finds word scores
+## Finds word scores
 word_scores = create_word_scores()
 
-#finds the best 'number' words based on word scores
+## Finds the best 'number' of words based on word scores
 def find_best_words(word_scores, number):
 	best_vals = sorted(word_scores.iteritems(), key=lambda (w, s): s, reverse=True)[:number]
 	best_words = set([w for w, s in best_vals])
 	return best_words
 
-#creates feature selection mechanism that only uses best words
+## Creates feature selection mechanism that only uses best words
 def best_word_features(words):
 	return dict([(word, True) for word in words if word in best_words])
 
-#numbers of features to select
+## List for top 'numbers' words after feature selection
 numbers_to_test = [10, 100, 1000, 10000, 15000]
-#tries the best_word_features mechanism with each of the numbers_to_test of features
+## Tries the best_word_features mechanism with each of the numbers_to_test of features
 for num in numbers_to_test:
 	print 'evaluating best %d word features' % (num)
 	best_words = find_best_words(word_scores, num)
