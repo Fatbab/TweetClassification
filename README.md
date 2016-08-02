@@ -9,7 +9,7 @@ A quick python proof of concept to classify (Naïve Bayse) twitter texts (superv
 5. Train and Test by Naïve Bayes classifier
 
 
-### Little Theory Brush Up:
+### Little Terminology Brush Up:
 1. To evaluate performace, we've got the following measures:    
   * Accuracy: percentage of items in test set that the classifier correctly labeled.    
    (TP + TN)/(TP + TN + FP + FN)
