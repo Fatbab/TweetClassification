@@ -13,8 +13,8 @@ from bokeh.plotting import figure, show, output_notebook
 ##################
 ## ReadIn Tweets
 ##################
-## Create a 2D dictionary
 ## Assuming tweets are collected and saved in csv format from TweetClassification.py in the same repo. 
+## Create 2D dictionary
 Adele = defaultdict(dict)
 with open('/PATH/TO/READ/Adele_tweets.csv', 'rb') as f:
     next(f) # skip header line
