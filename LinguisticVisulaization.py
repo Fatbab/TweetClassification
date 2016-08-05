@@ -112,7 +112,7 @@ plot_joint.scatter(x=tsne_joint[:,0], y=tsne_joint[:,1],
                     color=colormap[([0] * 200 + [3] * 200)],
                     source=bp.ColumnDataSource({
 						"chunks": [Adele[x]["title_chunks"] for x in Adele] + [Clinton[x]["title_chunks"] for x in Clinton]+ [Trump[x]["title_chunks"] for x in Trump],
-                        "title": ["Adele: "+ Adele[x]['title'] for x in Adele] + ["Bill Clinton: "+ Clinton[x]['title'] for x in Clinton] + ["Trump: " +Trump[x]['title'] for x in Trump]
+						"title": ["Adele: "+ Adele[x]['title'] for x in Adele] + ["Bill Clinton: "+ Clinton[x]['title'] for x in Clinton] + ["Trump: " +Trump[x]['title'] for x in Trump]
                     }))
 
 hover = plot_joint.select(dict(type=HoverTool))
