@@ -11,8 +11,11 @@ import bokeh.plotting as bp
 from bokeh.models import HoverTool, BoxSelectTool
 from bokeh.plotting import figure, show, output_notebook
 
-
+##################
+## ReadIn Tweets
+##################
 ## Create a 2D dictionary
+## Assuming tweets are collected and saved in csv format from TweetClassification.py in the same repo. 
 Adele = defaultdict(dict)
 with open('/PATH/TO/READ/Adele_tweets.csv', 'rb') as f:
     next(f) # skip header line
@@ -45,19 +48,19 @@ with open('/PATH/TO/READ/realDonaldTrump_tweets.csv', 'rb') as f:
 ## http://nbviewer.jupyter.org/github/AYLIEN/headline_analysis/blob/06f1223012d285412a650c201a19a1c95859dca1/main-chunks.ipynb#A-primer-on-parse-trees
 
 for i in range(len(Adele)):
-		Adele[i]['title_length'] = len(Adele[i]['title'])
-		Adele[i]['title_chunks'] = [chunk.type for chunk in parsetree(Adele[i]['title'])[0].chunks]
-		Adele[i]['title_chunks_length'] = len(Adele[i]['title_chunks'])
+	Adele[i]['title_length'] = len(Adele[i]['title'])
+	Adele[i]['title_chunks'] = [chunk.type for chunk in parsetree(Adele[i]['title'])[0].chunks]
+	Adele[i]['title_chunks_length'] = len(Adele[i]['title_chunks'])
 
 for i in range(len(Clinton)):
-    Clinton[i]["title_length"] = len(Clinton[i]["title"])
-    Clinton[i]["title_chunks"] = [chunk.type for chunk in parsetree(Clinton[i]["title"])[0].chunks]
-    Clinton[i]["title_chunks_length"] = len(Clinton[i]["title_chunks"])
+    	Clinton[i]["title_length"] = len(Clinton[i]["title"])
+    	Clinton[i]["title_chunks"] = [chunk.type for chunk in parsetree(Clinton[i]["title"])[0].chunks]
+    	Clinton[i]["title_chunks_length"] = len(Clinton[i]["title_chunks"])
 
 for i in range(len(Trump)):
-    Trump[i]["title_length"] = len(Trump[i]["title"])
-    Trump[i]["title_chunks"] = [chunk.type for chunk in parsetree(Trump[i]["title"])[0].chunks]
-    Trump[i]["title_chunks_length"] = len(Trump[i]["title_chunks"])
+    	Trump[i]["title_length"] = len(Trump[i]["title"])
+    	Trump[i]["title_chunks"] = [chunk.type for chunk in parsetree(Trump[i]["title"])[0].chunks]
+    	Trump[i]["title_chunks_length"] = len(Trump[i]["title_chunks"])
 
 df1 = pd.DataFrame.from_dict(Adele)
 df2 = pd.DataFrame.from_dict(Clinton)
