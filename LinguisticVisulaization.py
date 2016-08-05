@@ -1,4 +1,3 @@
-import tweepy
 import csv
 import pandas as pd
 from pattern.en import parsetree
