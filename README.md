@@ -26,7 +26,7 @@ A quick python proof of concept to classify (Naïve Bayse) twitter texts (superv
   The idea is to identify words that appear primarily in one class and not so often in other classes. To use `BigramAssocMeasures.chi_sq` function, we need to calcualte overall and class-based word frequecy for every word and, the total number of words. 
 
 ### Coding Remarks:   
-1. [Naive Bayes Classification] (http://stackoverflow.com/questions/10059594/a-simple-explanation-of-naive-bayes-classification)
+1. [Naïve Bayes Classification] (http://stackoverflow.com/questions/10059594/a-simple-explanation-of-naive-bayes-classification)
 1. Tweepy
 1. nltk.classify, nltk.metrics, nltk.probability, BigramAssocMeasures.chi_sq
 1. [Nested Function Call](http://stackoverflow.com/questions/38512596/nested-function-calls-and-missing-input-parameter-python)
